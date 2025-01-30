@@ -1,0 +1,5 @@
+rootProject.name = 'project-evaluation'
+include 'common'
+include 'rules'
+include 'server'
+

@@ -1,0 +1,33 @@
+# docker-compose.yaml
+
+networks:
+  frontend:
+    name: frontend-network
+    # Specify driver options
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
+
+services:
+  evaluation-ui-app:
+    container_name: evaluation-ui-app
+    restart: unless-stopped
+    image: evaluation-ui-app
+    build:
+      context: ../..
+      dockerfile: docker/production/frontend.Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - frontend
+  evaluation-server-app:
+    container_name: evaluation-server-app
+    restart: unless-stopped
+    image: evaluation-server-app
+    build:
+      context: ../..
+      dockerfile: docker/production/backend.Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - frontend

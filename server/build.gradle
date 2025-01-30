@@ -1,0 +1,48 @@
+plugins {
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+}
+
+group = 'com.strateknia'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+bootJar {
+    mainClass = 'com.strateknia.evaluation.server.EvaluationServer'
+}
+
+dependencies {
+    implementation project(':common')
+    implementation project(':rules')
+
+    implementation libs.lombok
+    annotationProcessor libs.lombok
+
+    implementation libs.slf4j_api
+
+    runtimeOnly libs.h2
+
+    implementation libs.spring_boot
+    implementation libs.spring_boot_web
+    implementation libs.spring_boot_auto
+    implementation libs.spring_boot_jpa
+    implementation libs.spring_boot_security
+    implementation libs.spring_boot_jetty
+    modules {
+        module("org.springframework.boot:spring-boot-starter-tomcat") {
+            replacedBy("org.springframework.boot:spring-boot-starter-jetty", "Use Undertow instead of Reactor Netty")
+        }
+    }
+
+    implementation libs.spring_security_test
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}

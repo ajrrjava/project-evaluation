@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.section-size {
+    width: 100%;
+    margin: 5px 0px 0px 0px;
+    padding: 5px;
+}
+
+.myDiv {
+    width: 100%;
+    min-height: 100vh;
+    max-height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0 auto;
+}
+
+.section {
+    width: 100%;
+    min-height: 100%;
+    padding: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.column {
+    width: 48%;
+}
+
+.field {
+    margin: 10px 0px;
+}
+
+.divs {
+  margin: 10px 0px 0px 0px;
+  padding: 0;
+}
+
+.circle-bullet {
+    margin: 10px 0px 0px 0px;
+    list-style-type:disc;
+}

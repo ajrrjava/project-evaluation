@@ -1,0 +1,63 @@
+package com.strateknia.evaluation.rules;
+
+import com.strateknia.evaluation.common.entity.Project;
+import com.strateknia.evaluation.common.entity.Facts;
+import com.strateknia.evaluation.common.entity.Determination;
+import com.strateknia.evaluation.common.entity.Criteria;
+
+global Determination determination;
+
+dialect  "java"
+
+rule "Check basic requirements"
+    salience 100
+    when
+        $c: Criteria()
+        $p: Project()
+    then
+        if($p.getAmount() < $c.getMinAmount()) {
+            determination.setRecommendations("The project amount is too low");
+         } else if($p.getAmount() > $c.getMaxAmount()) {
+            determination.setRecommendations("The project amount is too high");
+         } else {
+            determination.setQualification(10);
+         }
+end
+
+rule "Evaluate Return on Investment"
+    when
+        $c: Criteria()
+        $p: Project((facts.getRoi() > $c.getMinROI() && <= $c.getMaxROI()) && (facts.getNpv() > 0))
+    then
+        if(determination.getQualification() > 0) {
+            determination.addPoints(40);
+        }
+end
+
+rule "Payback period"
+    when
+        $c: Criteria()
+        $p: Project(facts.getPayback() > 0)
+    then
+        if(determination.getQualification() > 0) {
+            if($p.getFacts().getPayback() < 4) {
+                determination.addPoints(30);
+            } else if($p.getFacts().getPayback() < 6) {
+                determination.addPoints(20);
+            } else {
+                determination.addPoints(10);
+            }
+        }
+end
+
+rule "Final evaluation"
+    salience -100
+    when
+
+    then
+         if(determination.getQualification() > 0 && determination.getQualification() < 50) {
+            determination.setRecommendations("The project does not pass the minimum qualification of 50");
+        } else if(determination.getQualification() >= 50) {
+            determination.setRecommendations("The project meets the minimum qualification points and is candidate for funding");
+        }
+end
